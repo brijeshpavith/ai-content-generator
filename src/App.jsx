@@ -2,12 +2,15 @@ import { useState } from "react";
 
 function Spinner() {
   return (
-    <div className="flex justify-center items-center py-4">
-      <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-purple-600"></div>
-      <span className="ml-2 text-gray-600">Generating...</span>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
+      <div className="flex flex-col items-center">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-purple-600"></div>
+        <span className="mt-3 text-white font-medium">Generating...</span>
+      </div>
     </div>
   );
 }
+
 function App() {
   const [topic, setTopic] = useState("");
   const [tone, setTone] = useState("Professional");
@@ -106,26 +109,27 @@ function App() {
         </button>
       </div>
 
-      {/* Output */}
+      {/* Spinner Overlay */}
       {loading && <Spinner />}
 
+      {/* Output Section */}
       {!loading && output && (
         <div className="bg-white shadow-md rounded-xl p-4 mt-6 w-full max-w-lg">
           <h2 className="font-semibold mb-2">Generated Content:</h2>
           <p className="whitespace-pre-wrap">{output}</p>
-      <button
-        onClick={() => {
-          navigator.clipboard.writeText(output);
-          setCopied(true);
-          setTimeout(() => setCopied(false), 2000); // reset after 2s
-        }}
-        className="mt-4 bg-gray-700 text-white px-3 py-1 rounded-lg"
-      >
-        {copied ? "Copied!" : "Copy"}
-      </button>
-
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(output);
+              setCopied(true);
+              setTimeout(() => setCopied(false), 2000);
+            }}
+            className="mt-4 bg-gray-700 text-white px-3 py-1 rounded-lg"
+          >
+            {copied ? "Copied!" : "Copy"}
+          </button>
         </div>
       )}
+
 
       {/* History Panel */}
       {history.length > 0 && (

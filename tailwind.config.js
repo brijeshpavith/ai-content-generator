@@ -4,6 +4,9 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  safelist: [
+    "animate-spin", // ✅ ensure spinner class is never purged
+  ],
   theme: {
     extend: {},
   },
