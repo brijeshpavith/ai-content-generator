@@ -21,9 +21,11 @@ export async function handler(event) {
     });
 
     const data = await response.json();
+    console.log("OpenAI API response:", JSON.stringify(data, null, 2));
 
     const result =
-      data.choices?.[0]?.message?.content || "No content generated. Try again!";
+      data.choices?.[0]?.message?.content || "DEBUG: " + JSON.stringify(data);
+
 
     return {
       statusCode: 200,
