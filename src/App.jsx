@@ -1,17 +1,31 @@
 import { useState } from "react";
 
+function Spinner() {
+  return (
+    <div className="flex justify-center items-center py-4">
+      <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-purple-600"></div>
+      <span className="ml-2 text-gray-600">Generating...</span>
+    </div>
+  );
+}
 function App() {
   const [topic, setTopic] = useState("");
   const [tone, setTone] = useState("Professional");
   const [contentType, setContentType] = useState("Blog Post");
   const [output, setOutput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [history, setHistory] = useState([]);
+
 
   const handleGenerate = async () => {
   if (!topic) {
     alert("Please enter a topic first!");
     return;
   }
-  setOutput("Generating content...");
+
+  setLoading(true);
+  setOutput("");
 
   try {
     const response = await fetch("/.netlify/functions/generate", {
@@ -24,12 +38,24 @@ function App() {
 
     const data = await response.json();
     setOutput(data.result);
+    setHistory(prev => {
+      const newEntry = {
+        text: data.result,
+        tone,
+        contentType,
+        timestamp: new Date().toLocaleTimeString(),
+      };
+      const updated = [newEntry, ...prev];
+      return updated.slice(0, 3); // keep only last 3
+    });
+
   } catch (error) {
     console.error(error);
     setOutput("Error: Could not generate content.");
+  } finally {
+    setLoading(false);
   }
 };
-
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
@@ -81,19 +107,61 @@ function App() {
       </div>
 
       {/* Output */}
-      {output && (
+      {loading && <Spinner />}
+
+      {!loading && output && (
         <div className="bg-white shadow-md rounded-xl p-4 mt-6 w-full max-w-lg">
           <h2 className="font-semibold mb-2">Generated Content:</h2>
           <p className="whitespace-pre-wrap">{output}</p>
-          <button
-            onClick={() => navigator.clipboard.writeText(output)}
-            className="mt-4 bg-gray-700 text-white px-3 py-1 rounded-lg"
-          >
-            Copy
-          </button>
+      <button
+        onClick={() => {
+          navigator.clipboard.writeText(output);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000); // reset after 2s
+        }}
+        className="mt-4 bg-gray-700 text-white px-3 py-1 rounded-lg"
+      >
+        {copied ? "Copied!" : "Copy"}
+      </button>
+
         </div>
       )}
-    </div>
+
+      {/* History Panel */}
+      {history.length > 0 && (
+        <div className="bg-white shadow-md rounded-xl p-4 mt-6 w-full max-w-lg">
+          <h2 className="font-semibold mb-3">History (last {history.length})</h2>
+          <ul className="space-y-3">
+            {history.map((item, index) => (
+              <li key={index} className="border-b pb-2">
+                <p className="text-sm text-gray-500">
+                  {item.contentType} ({item.tone}) – {item.timestamp}
+                </p>
+                <p className="text-gray-700 line-clamp-2">
+                  {item.text.slice(0, 100)}...
+                </p>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(item.text);
+                  }}
+                  className="mt-1 text-sm bg-gray-700 text-white px-2 py-1 rounded-lg"
+                >
+                  Copy
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      
+     {/* Footer */}
+    <footer className="mt-12 py-4 w-full text-center text-gray-600 border-t">
+      <p>&copy; {new Date().getFullYear()}{" "}
+        <span className="font-semibold text-purple-600">HumAIne</span> – Brijesh P.</p>
+    </footer>
+  </div>
+
   );
 }
 
