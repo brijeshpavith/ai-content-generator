@@ -6,12 +6,30 @@ function App() {
   const [contentType, setContentType] = useState("Blog Post");
   const [output, setOutput] = useState("");
 
-  const handleGenerate = () => {
-    // Placeholder until API is added
-    setOutput(
-      `Pretend this is AI-generated: A ${tone.toLowerCase()} ${contentType.toLowerCase()} about "${topic}".`
-    );
-  };
+  const handleGenerate = async () => {
+  if (!topic) {
+    alert("Please enter a topic first!");
+    return;
+  }
+  setOutput("Generating content...");
+
+  try {
+    const response = await fetch("/.netlify/functions/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ topic, tone, contentType }),
+    });
+
+    const data = await response.json();
+    setOutput(data.result);
+  } catch (error) {
+    console.error(error);
+    setOutput("Error: Could not generate content.");
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
