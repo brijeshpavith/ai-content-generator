@@ -29,14 +29,9 @@ This project is built as part of my portfolio to showcase **frontend development
 ---
 
 ## 📸 Screenshots
-(Add your own screenshots in `/docs/` and link them here)  
+[Homepage Screenshot](https://github.com/brijeshpavith/ai-content-generator/blob/main/docs/screenshot-homepage.png)
 
-Example:
-```markdown
-![Homepage Screenshot](docs/screenshot-homepage.png)
-![Generated Content with History Panel](docs/screenshot-content-with-history.png)
-![History Panel](docs/screenshot-history.png)
-````
+[Generated Content with History Panel](https://github.com/brijeshpavith/ai-content-generator/blob/main/docs/screenshot-content-with-history.png)
 
 ---
 
@@ -129,6 +124,6 @@ Built with ❤️ by **Brijesh P. (HumAIne)**
 
 * 🌐 [Live Demo](https://humainecontentgenerator.netlify.app)
 * 💼 [LinkedIn](www.linkedin.com/in/brijesh-pavith-b011a67)
-* 📧 Email: brijeshpavith@hotmail.com
+* 📧 [Email:](brijeshpavith@hotmail.com)
 
-````
+---
