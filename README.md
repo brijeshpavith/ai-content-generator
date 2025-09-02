@@ -55,7 +55,7 @@ You can run this project on your computer using **Node.js** and **Netlify CLI**.
 ### 🔹 Step 1: Clone the Repo
 
 ```bash
-git clone https://github.com/<your-username>/ai-content-generator.git
+git clone https://github.com/brijeshpavith/ai-content-generator.git
 cd ai-content-generator
 ```
 
